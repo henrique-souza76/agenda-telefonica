@@ -1,0 +1,21 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@types/vue-the-mask": "^0.11.5",
+        "axios": "^1.6.4",
+        "laravel-vite-plugin": "^1.0.0",
+        "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "@mdi/font": "^7.4.47",
+        "@vitejs/plugin-vue": "^5.1.2",
+        "vue": "^3.4.38",
+        "vue-the-mask": "^0.11.1",
+        "vuetify": "^3.7.0"
+    }
+}
