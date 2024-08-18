@@ -8,7 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class PhonebookController extends Controller {
+class PhonebookController extends Controller
+{
 
     private $phonebookService;
 
@@ -41,6 +42,11 @@ class PhonebookController extends Controller {
     public function DeleteContact(Request $request): JsonResponse
     {
         try {
+
+            $request->validate([
+                'phone' => ['required', 'regex:/\([0-9]{2}\) [0-9]{5}-[0-9]{4}/'],
+                'password' => ['required']
+            ]);
 
             $this->phonebookService->DeleteContact($request->input('contact_id'));
 

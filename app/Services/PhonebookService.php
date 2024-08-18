@@ -33,7 +33,8 @@ class PhonebookService implements IPhonebookService {
         return $data;
     }
 
-    public function GetContacts(): Collection {
+    public function GetContacts(): Collection
+    {
         return Auth::user()->Contacts()->orderBy('name')->get();
     }
 

@@ -176,14 +176,14 @@ export default {
                 }
             })
             .then(response => {
-                this.ResetConfirmationModal();
                 this.SetupAlert("success", response.data.message);
                 this.RefreshContacts();
             }).catch(error => {
-                this.ResetConfirmationModal();
                 this.SetupAlert("error", error.response.data.message);
                 //console.log(error.response.data);
             })
+
+            this.ResetConfirmationModal();
         },
         SetupConfirmationModal(action, message, warningMessage = '') {
             this.confirmation_modal_message = message;

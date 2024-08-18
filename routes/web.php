@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 //Controllers will be imported here
 use App\Http\Controllers\PhonebookController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 
 //Phonebook
 Route::get('/', [PhonebookController::class, 'Index']);
@@ -26,3 +27,6 @@ Route::delete('/contato/deletar', [PhonebookController::class, 'DeleteContact'])
 Route::get('/login', [LoginController::class, 'Index'])->name('login');
 Route::post('/login/autenticar', [LoginController::class, 'Authenticate']);
 Route::get('/sair', [LoginController::class, 'Logout']);
+
+//User
+Route::post('/usuario/criar', [UserController::class, 'CreateUser']);

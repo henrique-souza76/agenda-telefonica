@@ -71,15 +71,21 @@
                     <v-spacer style="margin-bottom: 10%;"></v-spacer>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue-darken-1">NOVO USUÁRIO</v-btn>
-                        <v-btn color="teal" variant="elevated" class="px-5" @click="Authenticate">ENTRAR</v-btn>
+                        <v-btn color="blue-darken-1" @click="create_user_modal_visible = true">Novo usuário</v-btn>
+                        <v-btn color="teal" variant="elevated" class="px-5" @click="Authenticate">Entrar</v-btn>
                     </v-card-actions>
                 </v-form>
             </v-card-text>
         </v-card>
     </v-container>
+    <create-user-modal
+        :visible="create_user_modal_visible"
+        @close="create_user_modal_visible = false"
+    />
 </template>
 <script>
+import CreateUserModal from './modals/CreateUserModal.vue';
+
 export default {
     data() {
         return {
@@ -89,14 +95,19 @@ export default {
             show_password: false,
             login_error_alert: false,
             remember_value: false,
+
+            create_user_modal_visible: false,
+
         }
+    },
+    components: {
+        'create-user-modal': CreateUserModal
     },
     methods: {
         Authenticate() {
             this.$refs.form.validate().then(response => {
                 if(!response.valid) return;
 
-                this.login_error_alert = false;
                 this.loading = 'teal';
 
                 axios.post('/login/autenticar', {
