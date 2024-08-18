@@ -48,7 +48,10 @@
                         v-mask="'(##) #####-####'"
                         color="teal"
                         density="comfortable"
-                        :rules="[(v) => !!v || 'Este campo é obrigatório!']"
+                        :rules="[
+                            (v) => !!v || 'Este campo é obrigatório!',
+                            (v) => !this.numbers.includes(v) || 'Número de telefone já está sendo usado!',
+                        ]"
                     ></v-text-field>
 
                     <v-spacer style="height: 10px;"></v-spacer>
@@ -112,8 +115,8 @@ export default {
             alert_message: '',
         }
     },
-    props: ['visible'],
-    emits: ['close'],
+    props: ['visible', 'numbers'],
+    emits: ['close', 'success'],
     computed: {
         local_visible: {
             get() {
@@ -134,10 +137,10 @@ export default {
                     password: this.password,
                     password_confirmation: this.password_confirmation
                 })
-                .then(response => {
+                .then(() => {
                     this.loading = false;
-                    this.SetupAlert("success", response.data.message);
                     this.$emit('close');
+                    this.$emit('success');
                 })
                 .catch(error => {
                     this.loading = false;

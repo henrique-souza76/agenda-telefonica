@@ -5,8 +5,7 @@
 @section('content')
 
     <phonebook
-        :user_name="'{{$user_name}}'"
-        :contacts="{{$contacts}}"
+        :contacts="{{ $contacts }}"
     />
 
 @endsection

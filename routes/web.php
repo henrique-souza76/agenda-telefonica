@@ -30,3 +30,4 @@ Route::get('/sair', [LoginController::class, 'Logout']);
 
 //User
 Route::post('/usuario/criar', [UserController::class, 'CreateUser']);
+Route::get('/usuario/autenticado/obterNome', [UserController::class, 'GetAuthUserName']);

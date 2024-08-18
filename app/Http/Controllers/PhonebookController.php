@@ -25,9 +25,9 @@ class PhonebookController extends Controller
         if(!Auth::user())
             return redirect('/login');
 
-        $data = $this->phonebookService->GetViewData();
+        $contacts = $this->phonebookService->GetContacts();
 
-        return view('phonebook', $data);
+        return view('phonebook', ['contacts' => $contacts]);
     }
 
     public function GetContacts(): JsonResponse
@@ -42,11 +42,6 @@ class PhonebookController extends Controller
     public function DeleteContact(Request $request): JsonResponse
     {
         try {
-
-            $request->validate([
-                'phone' => ['required', 'regex:/\([0-9]{2}\) [0-9]{5}-[0-9]{4}/'],
-                'password' => ['required']
-            ]);
 
             $this->phonebookService->DeleteContact($request->input('contact_id'));
 

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\IUserRepository;
 use App\Interfaces\IUserService;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService implements IUserService {
 
@@ -17,6 +18,16 @@ class UserService implements IUserService {
         $this->userRepository = $userRepository;
     }
 
+    public function GetUsers(): Collection
+    {
+        return $this->userRepository->GetUsers();
+    }
+
+    public function GetPhoneNumbers(): Collection
+    {
+        return $this->userRepository->GetPhoneNumbers();
+    }
+
     public function CreateUser(array $userInfo): void
     {
         try {
@@ -26,7 +37,7 @@ class UserService implements IUserService {
         } catch(Exception $e) {
 
             throw new Exception($e->getMessage(), $e->getCode());
-            
+
         }
     }
 }

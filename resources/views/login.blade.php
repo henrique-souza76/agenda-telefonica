@@ -4,6 +4,8 @@
 
 @section('content')
 
-    <login />
+    <login
+        :numbers="{{ $numbers }}"
+    />
 
 @endsection

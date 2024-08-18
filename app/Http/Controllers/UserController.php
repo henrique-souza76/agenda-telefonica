@@ -6,6 +6,8 @@ use App\Interfaces\IUserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -23,9 +25,12 @@ class UserController extends Controller
     {
         try {
 
+            $numbers = $this->userService->GetPhoneNumbers()->toArray();
+            $numbersArray = array_map(fn($number) => $number['phone'], $numbers);
+
             $request->validate([
                 'name' => ['required'],
-                'phone' => ['required', 'regex:/\([0-9]{2}\) [0-9]{5}-[0-9]{4}/'],
+                'phone' => ['required', 'regex:/\([0-9]{2}\) [0-9]{5}-[0-9]{4}/', Rule::notIn($numbersArray)],
                 'password' => ['required'],
                 'password_confirmation' => ['required', 'same:password']
             ]);
@@ -39,7 +44,7 @@ class UserController extends Controller
         } catch(Exception $e) {
 
             return response()->json([
-                'message' => "Não foi possível criar o usuário.",
+                "message" => "Não foi possível criar o usuário.",
                 "line" => $e->getLine(),
                 "error" => $e->getMessage(),
                 "file" => $e->getFile(),
@@ -47,5 +52,12 @@ class UserController extends Controller
             ], 500);
 
         }
+    }
+
+    public function GetAuthUserName(): JsonResponse
+    {
+        $name = Auth::user()->name;
+
+        return response()->json(['name' => $name]);
     }
 }

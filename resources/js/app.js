@@ -12,8 +12,9 @@ import '@mdi/font/css/materialdesignicons.css';
 //Components will be imported here
 import Phonebook from './components/Phonebook.vue';
 import Login from './components/Login.vue';
-import Alert from './components/reusable/Alert.vue';
+import Alert from './components/reusable_components/Alert.vue';
 import ConfirmationModal from './components/modals/ConfirmationModal.vue';
+import Template from './components/Template.vue';
 
 const app = createApp();
 
@@ -25,6 +26,8 @@ app.component('login', Login);
 app.component('alert', Alert);
 app.component('confirmation-modal', ConfirmationModal);
 
+//Base Template
+app.component('base-template', Template);
 
 const vuetify = createVuetify({
     components,

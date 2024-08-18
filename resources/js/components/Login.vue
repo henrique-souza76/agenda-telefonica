@@ -1,9 +1,9 @@
 <template>
     <alert
-        type="error"
-        :visible="login_error_alert"
-        message="Telefone e/ou senha incorretos."
-        @close="login_error_alert = false"
+        :type="alert_type"
+        :visible="alert_visible"
+        :message="alert_message"
+        @close="alert_visible = false"
     />
     <v-container
         width="100%"
@@ -80,7 +80,11 @@
     </v-container>
     <create-user-modal
         :visible="create_user_modal_visible"
+        :numbers="numbers"
         @close="create_user_modal_visible = false"
+        @success="() => {
+            SetupAlert('success', 'Usuário cadastrado com sucesso!');
+        }"
     />
 </template>
 <script>
@@ -93,16 +97,19 @@ export default {
             phone_number: '',
             password: '',
             show_password: false,
-            login_error_alert: false,
             remember_value: false,
 
-            create_user_modal_visible: false,
+            alert_type: '',
+            alert_visible: false,
+            alert_message: '',
 
+            create_user_modal_visible: false,
         }
     },
     components: {
         'create-user-modal': CreateUserModal
     },
+    props: ['numbers'],
     methods: {
         Authenticate() {
             this.$refs.form.validate().then(response => {
@@ -116,16 +123,22 @@ export default {
                     remember_value: this.remember_value,
                 })
                 .then(response => {
-                    //console.log(response.data);
                     window.location.replace(response.data.redirect);
                 })
                 .catch(error => {
                     this.loading = false;
-                    this.login_error_alert = true;
+
+                    this.SetupAlert("error", error.response.data.message);
+
                     //console.log(error.response);
                 });
             });
-        }
+        },
+        SetupAlert(type, message) {
+            this.alert_type = type;
+            this.alert_message = message;
+            this.alert_visible = true;
+        },
     }
 }
 </script>

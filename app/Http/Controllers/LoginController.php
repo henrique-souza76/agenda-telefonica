@@ -2,18 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\IUserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
+    private $userService;
+
+    public function __construct(
+        IUserService $userService
+    )
+    {
+        $this->userService = $userService;
+    }
+
     public function Index()
     {
         if(Auth::user())
             return redirect('/');
 
-        return view('login');
+        $numbers = $this->userService->GetPhoneNumbers()->toArray();
+        $numbersArray = array_map(fn($number) => $number['phone'], $numbers);
+
+        return view('login', ['numbers' => json_encode($numbersArray)]);
     }
 
     public function Authenticate(Request $request): JsonResponse
@@ -29,7 +43,7 @@ class LoginController extends Controller
             return response()->json(['redirect' => '/']);
         }
 
-        return response()->json(['message' => 'Incorrect phone number and/or password.'], 401);
+        return response()->json(['message' => 'Telefone e/ou senha incorretos.'], 401);
     }
 
     public function Logout(Request $request): JsonResponse

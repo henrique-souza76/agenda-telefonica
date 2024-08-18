@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Interfaces\IPhonebookRepository;
 use App\Interfaces\IPhonebookService;
-use App\Models\Contact;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -18,19 +17,6 @@ class PhonebookService implements IPhonebookService {
     )
     {
         $this->phonebookRepository = $phonebookRepository;
-    }
-
-    /**
-     * Returns data used by the phonebook view
-     *
-     * @return array
-     */
-    public function GetViewData(): array
-    {
-        $data['user_name'] = Auth::user()->name;
-        $data['contacts'] = $this->GetContacts();
-
-        return $data;
     }
 
     public function GetContacts(): Collection
