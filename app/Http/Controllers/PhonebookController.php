@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\IPhonebookService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Exception;
@@ -23,9 +22,6 @@ class PhonebookController extends Controller
 
     public function Index(): View
     {
-        if(!Auth::user())
-            return redirect('/login');
-
         $contacts = $this->phonebookService->GetContacts();
 
         return view('phonebook', ['contacts' => $contacts]);
