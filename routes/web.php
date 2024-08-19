@@ -22,6 +22,7 @@ use App\Http\Controllers\UserController;
 Route::get('/', [PhonebookController::class, 'Index']);
 Route::get('/contato/obterContatos', [PhonebookController::class, 'GetContacts']);
 Route::post('/contato/adicionar', [PhonebookController::class, 'AddContact']);
+Route::put('/contato/editar', [PhonebookController::class, 'EditContact']);
 Route::delete('/contato/deletar', [PhonebookController::class, 'DeleteContact']);
 
 //Login

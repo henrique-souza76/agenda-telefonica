@@ -17,6 +17,15 @@ class PhonebookRepository implements IPhonebookRepository {
         Contact::create($contactData);
     }
 
+    public function EditContact(Contact $contact, array $contactData): void
+    {
+        $contact->name = $contactData['name'];
+        $contact->phone = $contactData['phone'];
+        $contact->email = $contactData['email'];
+        $contact->image = $contactData['image'];
+        $contact->save();
+    }
+
     public function DeleteContact(Contact $contact): void
     {
         $contact->delete();

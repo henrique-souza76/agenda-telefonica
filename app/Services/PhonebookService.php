@@ -54,6 +54,21 @@ class PhonebookService implements IPhonebookService {
         }
     }
 
+    public function EditContact(array $contactData): void
+    {
+        try {
+
+            $contact = $this->phonebookRepository->GetContactById($contactData['id']);
+
+            $this->phonebookRepository->EditContact($contact, $contactData);
+
+        } catch(Exception $e) {
+
+            throw new Exception($e->getMessage(), 500);
+
+        }
+    }
+
     public function DeleteContact(int $contactId): void
     {
         try {

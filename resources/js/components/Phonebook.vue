@@ -89,12 +89,12 @@
                                 icon="eye"
                                 text="Visualizar"
                                 color="blue darken-1"
-                                :action="() => {}"
+                                :action="() => ViewContact(item)"
                                 />
                                 <menu-item
                                 icon="pencil"
                                 text='Editar'
-                                :action="() => {}"
+                                :action="() => EditContact(item)"
                                 />
                                 <menu-item
                                 icon="delete"
@@ -118,11 +118,27 @@
         </v-card>
     </base-template>
 
+    <view-contact-modal
+        :visible="view_contact_modal_visible"
+        :contact="selected_contact"
+        @close="view_contact_modal_visible = false"
+    />
+
     <add-contact-modal
         :visible="add_contact_modal_visible"
         @close="add_contact_modal_visible = false"
         @success="() => {
             SetupAlert('success', 'Contato adicionado com sucesso!');
+            RefreshContacts();
+        }"
+    />
+
+    <edit-contact-modal
+        :visible="edit_contact_modal_visible"
+        :contact="selected_contact"
+        @close="edit_contact_modal_visible = false"
+        @success="() => {
+            SetupAlert('success', 'Contato atualizado com sucesso!');
             RefreshContacts();
         }"
     />
@@ -136,7 +152,9 @@
     />
 </template>
 <script>
+import ViewContactModal from './modals/ViewContactModal.vue';
 import AddContactModal from './modals/AddContactModal.vue';
+import EditContactModal from './modals/EditContactModal.vue';
 
 export default {
     data() {
@@ -149,7 +167,11 @@ export default {
                 { title: 'Ações', key: 'actions', sortable: false, width: '10%', align: "center" },
             ],
 
+            view_contact_modal_visible: false,
             add_contact_modal_visible: false,
+            edit_contact_modal_visible: false,
+
+            selected_contact: {},
 
             confirmation_modal_visible: false,
             confirmation_modal_message: '',
@@ -163,12 +185,22 @@ export default {
         }
     },
     components: {
-        'add-contact-modal': AddContactModal
+        'view-contact-modal': ViewContactModal,
+        'add-contact-modal': AddContactModal,
+        'edit-contact-modal': EditContactModal,
     },
     props: ["contacts"],
     methods: {
+        ViewContact(contact) {
+            this.selected_contact = contact;
+            this.view_contact_modal_visible = true;
+        },
         AddContact() {
             this.add_contact_modal_visible = true;
+        },
+        EditContact(contact) {
+            this.selected_contact = contact;
+            this.edit_contact_modal_visible = true;
         },
         DeleteContact(contact) {
             axios.delete('/contato/deletar', {

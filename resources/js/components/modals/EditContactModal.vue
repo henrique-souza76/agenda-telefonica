@@ -14,7 +14,7 @@
                 @close="alert_visible = false"
             />
 
-            <v-card-title>Adicionar Contato</v-card-title>
+            <v-card-title>Editar Contato</v-card-title>
 
             <v-card-text class="pt-0">
                 <v-form
@@ -42,7 +42,7 @@
                                 class="avatar-click"
                                 @click="$refs.fileInput.click()"
                             >
-                                <v-img v-if="image" :src="image" ></v-img>
+                                <v-img v-if="contact.image" :src="contact.image" ></v-img>
                                 <v-icon v-else size="40">mdi-image-plus</v-icon>
                             </v-avatar>
                             <input
@@ -56,14 +56,14 @@
                         <div style="text-align: center; margin: 5px 0;">
                             <v-btn
                                 variant="text"
-                                :color="image? 'teal' : 'black'"
-                                :prepend-icon="image? 'mdi-pencil' : ''"
+                                :color="contact.image? 'teal' : 'black'"
+                                :prepend-icon="contact.image? 'mdi-pencil' : ''"
                                 @click="$refs.fileInput.click()"
                             >
-                                {{ image ? 'Trocar' : 'Adicionar imagem' }}
+                                {{ contact.image ? 'Trocar' : 'Adicionar imagem' }}
                             </v-btn>
                             <span
-                                v-if="!image"
+                                v-if="!contact.image"
                                 style="font-size: 10px; color: red;"
                             >(max. 2MB)</span>
                             <span v-else>
@@ -71,7 +71,7 @@
                                     variant="text"
                                     color="red"
                                     prepend-icon="mdi-delete"
-                                    @click="image = null"
+                                    @click="contact.image = null"
                                 >Remover</v-btn>
                             </span>
                         </div>
@@ -83,7 +83,7 @@
                         label="Nome"
                         placeholder=""
                         persistent-placeholder
-                        v-model="name"
+                        v-model="contact.name"
                         variant="outlined"
                         color="teal"
                         density="comfortable"
@@ -96,7 +96,7 @@
                         label="Número de Telefone"
                         placeholder=""
                         persistent-placeholder
-                        v-model="phone_number"
+                        v-model="contact.phone"
                         type="tel"
                         variant="outlined"
                         v-mask="'(##) #####-####'"
@@ -114,7 +114,7 @@
                         label="E-mail"
                         placeholder=""
                         persistent-placeholder
-                        v-model="email"
+                        v-model="contact.email"
                         type="email"
                         variant="outlined"
                         color="teal"
@@ -129,8 +129,14 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue-darken-1" @click="this.$emit('close')">Cancelar</v-btn>
-                        <v-btn color="teal" variant="elevated" class="px-5" @click="AddContact">Adicionar</v-btn>
+                        <v-btn
+                            color="blue-darken-1"
+                            @click="() => {
+                                this.contact.image = this.current_image;
+                                this.$emit('close');
+                            }"
+                        >Cancelar</v-btn>
+                        <v-btn color="teal" variant="elevated" class="px-5" @click="EditContact">Atualizar</v-btn>
                     </v-card-actions>
                 </v-form>
             </v-card-text>
@@ -141,10 +147,7 @@
 export default {
     data() {
         return {
-            image: null,
-            name: '',
-            phone_number: '',
-            email: '',
+            current_image: this.contact.image,
 
             loading: false,
 
@@ -153,7 +156,7 @@ export default {
             alert_message: '',
         }
     },
-    props: ['visible'],
+    props: ['visible', 'contact'],
     emits: ['close', 'success'],
     computed: {
         local_visible: {
@@ -163,21 +166,21 @@ export default {
         }
     },
     methods: {
-        AddContact() {
+        EditContact() {
             this.$refs.form.validate().then(response => {
                 if(!response.valid) return;
 
                 this.loading = 'teal';
 
-                axios.post('/contato/adicionar', {
-                    name: this.name,
-                    phone: this.phone_number,
-                    email: this.email,
-                    image: this.image
+                axios.put('/contato/editar', {
+                    id: this.contact.id,
+                    name: this.contact.name,
+                    phone: this.contact.phone,
+                    email: this.contact.email,
+                    image: this.contact.image
                 })
                 .then(() => {
                     this.loading = false;
-                    this.ResetContactData();
                     this.$emit('close');
                     this.$emit('success');
                 })
@@ -200,7 +203,7 @@ export default {
                     } else {
                         const reader = new FileReader();
                         reader.onload = (e) => {
-                            this.image = e.target.result;
+                            this.contact.image = e.target.result;
                         };
                         reader.readAsDataURL(file);
                     }
@@ -213,12 +216,6 @@ export default {
             this.alert_type = type;
             this.alert_message = message;
             this.alert_visible = true;
-        },
-        ResetContactData() {
-            this.image = null;
-            this.name = '';
-            this.phone_number = '';
-            this.email = '';
         }
     }
 }

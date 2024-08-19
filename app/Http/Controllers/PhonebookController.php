@@ -56,14 +56,46 @@ class PhonebookController extends Controller
             $this->phonebookService->AddContact($request->all());
 
             return response()->json([
-                'message' => "Contato adicionado com sucesso!",
-                'contact' => $request->input('image')
+                'message' => "Contato adicionado com sucesso!"
             ]);
 
         } catch(Exception $e) {
 
             return response()->json([
                 "message" => "Não foi possível adicionar o contato.",
+                "line" => $e->getLine(),
+                "error" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "stack_trace" => $e->getTrace()
+            ], 500);
+
+        }
+    }
+
+    public function EditContact(Request $request): JsonResponse
+    {
+        try {
+
+            $request->validate([
+                'name' => ['required'],
+                'phone' => ['required', 'regex:/\([0-9]{2}\) [0-9]{5}-[0-9]{4}/'],
+                'email' => ['required', 'email']
+            ]);
+
+            if($request->input('image')) {
+                $this->phonebookService->ValidateImage($request->input('image'));
+            }
+
+            $this->phonebookService->EditContact($request->all());
+
+            return response()->json([
+                'message' => "Contato atualizado com sucesso!"
+            ]);
+
+        } catch(Exception $e) {
+
+            return response()->json([
+                "message" => "Não foi possível atualizar o contato.",
                 "line" => $e->getLine(),
                 "error" => $e->getMessage(),
                 "file" => $e->getFile(),
