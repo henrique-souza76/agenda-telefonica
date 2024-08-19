@@ -87,13 +87,14 @@
                             <v-list>
                                 <menu-item
                                 icon="eye"
-                                text="Visualizar"
+                                text='Visualizar'
                                 color="blue darken-1"
                                 :action="() => ViewContact(item)"
                                 />
                                 <menu-item
                                 icon="pencil"
                                 text='Editar'
+                                color="teal"
                                 :action="() => EditContact(item)"
                                 />
                                 <menu-item

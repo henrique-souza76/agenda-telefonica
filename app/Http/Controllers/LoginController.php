@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\IUserService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,8 @@ class LoginController extends Controller
         $this->userService = $userService;
     }
 
-    public function Index()
+    public function Index(): View
     {
-        if(Auth::user())
-            return redirect('/');
-
         $numbers = $this->userService->GetPhoneNumbers()->toArray();
         $numbersArray = array_map(fn($number) => $number['phone'], $numbers);
 
