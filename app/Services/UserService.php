@@ -36,7 +36,7 @@ class UserService implements IUserService {
 
         } catch(Exception $e) {
 
-            throw new Exception($e->getMessage(), $e->getCode());
+            throw new Exception($e->getMessage(), 500);
 
         }
     }

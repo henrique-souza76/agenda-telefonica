@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('email');
-            $table->string('photo_link')->nullable();
+            $table->mediumText('image')->nullable();
             $table->unsignedBigInteger('creator_user_id')->index();
             $table->timestamps();
         });

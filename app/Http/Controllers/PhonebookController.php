@@ -39,6 +39,40 @@ class PhonebookController extends Controller
         ]);
     }
 
+    public function AddContact(Request $request): JsonResponse
+    {
+        try {
+
+            $request->validate([
+                'name' => ['required'],
+                'phone' => ['required', 'regex:/\([0-9]{2}\) [0-9]{5}-[0-9]{4}/'],
+                'email' => ['required', 'email']
+            ]);
+
+            if($request->input('image')) {
+                $this->phonebookService->ValidateImage($request->input('image'));
+            }
+
+            $this->phonebookService->AddContact($request->all());
+
+            return response()->json([
+                'message' => "Contato adicionado com sucesso!",
+                'contact' => $request->input('image')
+            ]);
+
+        } catch(Exception $e) {
+
+            return response()->json([
+                "message" => "Não foi possível adicionar o contato.",
+                "line" => $e->getLine(),
+                "error" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "stack_trace" => $e->getTrace()
+            ], 500);
+
+        }
+    }
+
     public function DeleteContact(Request $request): JsonResponse
     {
         try {

@@ -12,6 +12,11 @@ class PhonebookRepository implements IPhonebookRepository {
         return Contact::findOrFail($contactId);
     }
 
+    public function AddContact(array $contactData): void
+    {
+        Contact::create($contactData);
+    }
+
     public function DeleteContact(Contact $contact): void
     {
         $contact->delete();

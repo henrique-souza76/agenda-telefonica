@@ -45,7 +45,10 @@
                         v-mask="'(##) #####-####'"
                         color="teal"
                         density="comfortable"
-                        :rules="[(v) => !!v || 'Este campo é obrigatório!']"
+                        :rules="[
+                            (v) => !!v || 'Este campo é obrigatório!',
+                            (v) => /\(\d{2}\) \d{5}-\d{4}/.test(v) || 'Número de telefone inválido'
+                        ]"
                     ></v-text-field>
                     <v-spacer style="height: 10px;"></v-spacer>
                     <v-text-field
@@ -128,7 +131,7 @@ export default {
                 .catch(error => {
                     this.loading = false;
 
-                    this.SetupAlert("error", error.response.data.message);
+                    this.SetupAlert("error", 'Telefone e/ou senha incorretos.');
 
                     //console.log(error.response);
                 });

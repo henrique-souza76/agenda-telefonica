@@ -1,28 +1,45 @@
 <template>
+
+    <alert
+        :type="alert_type"
+        :visible="alert_visible"
+        :message="alert_message"
+        @close="alert_visible = false"
+    />
+
     <base-template>
+
         <v-card
             variant="outlined"
-            height="81.5vh"
+            max-height="81.5vh"
             elevation="10"
             style="
             border-color: teal;
-            margin: 25px auto;
             overflow-y: scroll;
+            width: 600px;
             max-width: 600px;
             "
         >
 
-            <v-row style="display: flex; align-items: center">
+            <v-row style="display: flex; align-items: center; flex-wrap: wrap;">
                 <v-col>
                     <v-card-title
                     style="
                     font-size: 25px;
+                    padding-bottom: 0;
                     "
                     >Contatos</v-card-title>
                 </v-col>
                 <v-spacer></v-spacer>
-                <v-col>
-                    <v-btn color="teal">NOVO CONTATO</v-btn>
+                <v-col
+                    style="
+                    margin-right: 15px;
+                    display: flex;
+                    justify-content: center;
+                    min-width: 250px;
+                    margin-top: 5px;
+                ">
+                    <v-btn color="teal" @click="AddContact" width="80%">NOVO CONTATO</v-btn>
                 </v-col>
             </v-row>
 
@@ -49,32 +66,48 @@
                     hover
                     no-data-text="Nenhum contato cadastrado"
                 >
+
+                    <template v-slot:item.name="{ item }" class="d-flex">
+                        <v-avatar size="small" color="teal" class="mr-3">
+                            <v-img
+                            v-if="item.image"
+                            :src="item.image"
+                            cover
+                            ></v-img>
+                            <v-icon v-else size="45">mdi-account-circle</v-icon>
+                        </v-avatar>
+                        <span style="font-family: 'Roboto Mono', monospace;">{{ $filters.formatText(item.name) }}</span>
+                    </template>
+
                     <template v-slot:item.actions="{ item }">
-                        <v-icon
-                            size="default"
-                            color="blue-darken-1"
-                            @click="editcontact(item)"
-                        >
-                            mdi-eye
-                        </v-icon>
-                        <v-icon
-                            class="mx-3"
-                            size="default"
-                            @click="editcontact(item)"
-                        >
-                            mdi-pencil
-                        </v-icon>
-                        <v-icon
-                            size="default"
-                            @click="SetupConfirmationModal(
-                                () => DeleteContact(item),
-                                'Confirma exclusão do contato?',
-                                'Essa ação não pode ser desfeita!'
-                            )"
-                            color="red"
-                        >
-                            mdi-delete
-                        </v-icon>
+                        <v-menu location="center">
+                            <template v-slot:activator="{ props }">
+                                <v-btn variant="text" icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                            </template>
+                            <v-list>
+                                <menu-item
+                                icon="eye"
+                                text="Visualizar"
+                                color="blue darken-1"
+                                :action="() => {}"
+                                />
+                                <menu-item
+                                icon="pencil"
+                                text='Editar'
+                                :action="() => {}"
+                                />
+                                <menu-item
+                                icon="delete"
+                                text='Excluir'
+                                color="red"
+                                :action="() => SetupConfirmationModal(
+                                    () => DeleteContact(item),
+                                    'Confirma exclusão do contato?',
+                                    'Essa ação não pode ser desfeita!'
+                                )"
+                                />
+                            </v-list>
+                        </v-menu>
                     </template>
 
                     <template v-slot:loading>
@@ -85,11 +118,13 @@
         </v-card>
     </base-template>
 
-    <alert
-        :type="alert_type"
-        :visible="alert_visible"
-        :message="alert_message"
-        @close="alert_visible = false"
+    <add-contact-modal
+        :visible="add_contact_modal_visible"
+        @close="add_contact_modal_visible = false"
+        @success="() => {
+            SetupAlert('success', 'Contato adicionado com sucesso!');
+            RefreshContacts();
+        }"
     />
 
     <confirmation-modal
@@ -101,6 +136,8 @@
     />
 </template>
 <script>
+import AddContactModal from './modals/AddContactModal.vue';
+
 export default {
     data() {
         return {
@@ -108,9 +145,11 @@ export default {
             refresh_data: false,
             search: '',
             headers: [
-                { title: 'Nome', key: 'name', sortable: false, width: "75%", class: 'font-weight-bold' },
-                { title: 'Ações', key: 'actions', sortable: false, width: "25%", align: "center" },
+                { title: 'Nome', key: 'name', sortable: false, width: '90%', class: 'font-weight-bold' },
+                { title: 'Ações', key: 'actions', sortable: false, width: '10%', align: "center" },
             ],
+
+            add_contact_modal_visible: false,
 
             confirmation_modal_visible: false,
             confirmation_modal_message: '',
@@ -123,8 +162,14 @@ export default {
             alert_message: '',
         }
     },
+    components: {
+        'add-contact-modal': AddContactModal
+    },
     props: ["contacts"],
     methods: {
+        AddContact() {
+            this.add_contact_modal_visible = true;
+        },
         DeleteContact(contact) {
             axios.delete('/contato/deletar', {
                 params: {
