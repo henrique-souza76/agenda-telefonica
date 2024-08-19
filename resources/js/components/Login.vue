@@ -7,18 +7,19 @@
     />
     <v-container
         width="100%"
-        height="100%"
-        class="d-flex align-center justify-center"
+        min-height="100%"
+        class="d-flex align-center justify-center pa-0"
     >
         <v-card
             width="80%"
             min-height="400px"
             max-width="500px"
+            min-width="300px"
             density="comfortable"
             elevation="10"
             :loading="loading"
             class="pa-4 pt-5"
-            style="border-radius: 10px;"
+            style="border-radius: 10px; margin: 10px 0;"
         >
             <v-card-title
                 style="
@@ -72,8 +73,7 @@
                         </v-checkbox>
                     </v-row>
                     <v-spacer style="margin-bottom: 10%;"></v-spacer>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
+                    <v-card-actions class="pa-0 d-flex justify-end" style="min-width: 237px;">
                         <v-btn color="blue-darken-1" @click="create_user_modal_visible = true">Novo usuário</v-btn>
                         <v-btn color="teal" variant="elevated" class="px-5" @click="Authenticate">Entrar</v-btn>
                     </v-card-actions>
@@ -141,7 +141,7 @@ export default {
             this.alert_type = type;
             this.alert_message = message;
             this.alert_visible = true;
-        },
+        }
     }
 }
 </script>

@@ -2,7 +2,8 @@
     <v-dialog
         v-model="local_visible"
         persistent :overlay="false" scrollable
-        max-width="500px"
+        max-width="600px"
+        min-width="300px"
         transition="dialog-transition"
     >
         <v-card :loading="loading">
@@ -64,7 +65,7 @@
                             </v-btn>
                             <span
                                 v-if="!contact.image"
-                                style="font-size: 10px; color: red;"
+                                style="font-size: 10px; color: red; display: inline-block;"
                             >(max. 2MB)</span>
                             <span v-else>
                                 <v-btn
@@ -127,8 +128,7 @@
 
                     <v-spacer style="height: 10px;"></v-spacer>
 
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
+                    <v-card-actions class="pa-0 d-flex justify-end" style="min-width: 237px;">
                         <v-btn
                             color="blue-darken-1"
                             @click="() => {
@@ -147,7 +147,7 @@
 export default {
     data() {
         return {
-            current_image: this.contact.image,
+            current_image: '',
 
             loading: false,
 
@@ -158,6 +158,11 @@ export default {
     },
     props: ['visible', 'contact'],
     emits: ['close', 'success'],
+    watch: {
+        visible(value) {
+            if(value) this.current_image = this.contact.image;
+        }
+    },
     computed: {
         local_visible: {
             get() {

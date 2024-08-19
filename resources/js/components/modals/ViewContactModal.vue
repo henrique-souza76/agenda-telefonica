@@ -2,7 +2,8 @@
     <v-dialog
         v-model="local_visible"
         persistent :overlay="false" scrollable
-        max-width="500px"
+        max-width="600px"
+        min-width="300px"
         transition="dialog-transition"
     >
         <v-card>

@@ -27,7 +27,7 @@ app.config.globalProperties.$filters = {
         const screenWidth = window.innerWidth;
 
         if(screenWidth < 500) {
-            return value.length > 16 ? value.slice(0, 16) + '...' : value;
+            return value.length > 20 ? value.slice(0, 21) + '...' : value;
         } else {
             return value.length > 45 ? value.slice(0, 45) + '...' : value;
         }

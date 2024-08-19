@@ -3,6 +3,7 @@
         v-model="local_visible"
         persistent :overlay="false" scrollable
         max-width="600px"
+        min-width="300px"
         transition="dialog-transition"
     >
         <v-card :loading="loading">
@@ -89,8 +90,7 @@
                         @click:append-inner="show_password = !show_password"
                     ></v-text-field>
 
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
+                    <v-card-actions class="pa-0 d-flex justify-end" style="min-width: 237px;">
                         <v-btn color="blue-darken-1" @click="this.$emit('close')">Cancelar</v-btn>
                         <v-btn color="teal" variant="elevated" class="px-5" @click="CreateUser">Cadastrar</v-btn>
                     </v-card-actions>
@@ -139,8 +139,10 @@ export default {
                 })
                 .then(() => {
                     this.loading = false;
+                    this.ResetUserData();
                     this.$emit('close');
                     this.$emit('success');
+
                 })
                 .catch(error => {
                     this.loading = false;
@@ -155,6 +157,12 @@ export default {
             this.alert_message = message;
             this.alert_visible = true;
         },
+        ResetUserData() {
+            this.name = '';
+            this.phone_number = '';
+            this.password = '';
+            this.password_confirmation = '';
+        }
     }
 }
 </script>

@@ -104,9 +104,21 @@ export default {
     padding-right: 0;
 }
 
+.alert-message {
+    font-size: 20px;
+}
+
 @media(max-width: 400px) {
     .v-table > .v-table__wrapper > table > tbody > tr > td {
         font-size: 12px;
+    }
+
+    .v-card-actions > .v-btn > .v-btn__content {
+        font-size: 13px;
+    }
+
+    .alert-message {
+        font-size: 13px;
     }
 }
 </style>

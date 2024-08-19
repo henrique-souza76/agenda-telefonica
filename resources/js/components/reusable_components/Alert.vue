@@ -13,8 +13,8 @@
             text-align: center;
             padding: 10px"
             :color="type"
-            :title="message"
-            ></v-card>
+            class="alert-message"
+            > {{ message }}</v-card>
         </v-container>
     </transition>
 </template>
