@@ -11,7 +11,7 @@
 
         <v-card
             variant="outlined"
-            max-height="81.5vh"
+            height="81.5vh"
             elevation="10"
             style="
             border-color: teal;
