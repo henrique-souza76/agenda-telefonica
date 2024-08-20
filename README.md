@@ -32,7 +32,7 @@ Aplicação criada com Laravel, VueJs e banco de dados MySQL com o objetivo de c
 ```php artisan serve```
 
 * Por fim, basta executar as migrations e seeds numa outra janela de terminal, na mesma pasta: <br>
-```php artisan migrate --seed```
+```php artisan migrate --seed``` <br>
 *Ps.: Caso o banco de dados definido no seu arquivo .env não exista na sua conexão MySQL, ele irá perguntar se você deseja criar. Basta teclar enter.*
 
 Se tudo ocorreu bem, sua aplicação deve estar disponível acessando localhost:8000 no seu navegador!
