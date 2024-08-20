@@ -10,7 +10,7 @@ Aplicação criada com Laravel, VueJs e banco de dados MySQL com o objetivo de c
 
 ## Instalação
 
-* Para essa instalação, é necessário ter o <a href="https://getcomposer.org/download/" target="_blank">Composer</a>, o <a href="https://docs.npmjs.com/downloading-and-installing-node-js-and-npm" target="_blank">npm</a> e o banco de dados <a href="https://www.mysql.com/downloads/" target="_blank">MySQL</a> instalado na sua máquina. Recomendo também a instalação do <a href="https://www.phpmyadmin.net/downloads/" target="_blank">phpMyAdmin</a> para a visualização do banco de dados.
+* Para essa instalação, é necessário ter o <a href="https://getcomposer.org/download/">Composer</a>, o <a href="https://docs.npmjs.com/downloading-and-installing-node-js-and-npm">npm</a> e o banco de dados <a href="https://www.mysql.com/downloads/">MySQL</a> instalado na sua máquina. Recomendo também a instalação do <a href="https://www.phpmyadmin.net/downloads/">phpMyAdmin</a> para a visualização do banco de dados.
 
 * O primeiro passo para instalação é clonar este repositório do github.
 
